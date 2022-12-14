@@ -27,7 +27,7 @@ public class Completed implements Phase {
 
     @Override
     public void next_state(Order O) {
-        //Aquí podemos implementar nuevas clases con siguientes hipotéticos estados como por ejemplo la Entrega de dichas entregas, siendo la siguiente fase Entrega
+        //Aquí podemos implementar nuevas clases con siguientes hipotéticos estados como por ejemplo la Entrega de los pedidos, siendo la siguiente fase Entrega
         throw new UnsupportedOperationException("There are not more phases after");
     }
 

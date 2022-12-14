@@ -39,8 +39,16 @@ public class Completed implements Phase {
     @Override
     public void complete_order(Order O) {
         //Completa la orden
-        if(!O.h_after_payment)
+        if (O.h_after_payment) {
             O.done_order = true;
+            O.Log = O.Log.concat("\n- Order " + O.order_number + " : Completed Order --");
+            //Si hubiera un estado se añadiria un  O.setOrderPhase(NuevoEstado.getInstance())
+        }
         else throw new IllegalStateException("The completition time has not ended yet");
+    }
+
+    @Override
+    public void screenInfo(Order O) {
+        System.out.println("Order Number : " + O.getOrder_number() + "\nPhase : Completed Order : " + O.Cart.size() + " products");
     }
 }

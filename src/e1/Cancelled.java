@@ -33,16 +33,23 @@ public class Cancelled implements Phase {
     @Override
     public void cancel_order(Order O) {
         //cancela orden si 24h esta a true, vacia la lista,los dos bool a false y estado actual shopping cart
-        if (O.h_after_payment) {
+        if (!O.h_after_payment) {
             O.Cart.clear();
-            O.h_after_payment = false;
             O.done_order = false;
+            O.started = false;
             O.setOrderPhase(ShoppingCart.getInstance());
+            O.Log = O.Log.concat("\n- Order " + O.getOrder_number() + " : Cancelled Order --");
+            O.Log = O.Log.concat("\nOrder " + O.getOrder_number() + ": Shopping Phase");
         } else throw new IllegalStateException("The cancel time has ended");
     }
 
     @Override
     public void complete_order(Order O) {
         throw new UnsupportedOperationException("This operation does not belong to this phase");
+    }
+
+    @Override
+    public void screenInfo(Order O) {
+        System.out.println("\nOrder Number : " + O.getOrder_number() + "\nPhase : Cancelled Order");
     }
 }

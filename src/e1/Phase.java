@@ -12,4 +12,6 @@ interface Phase {
     void cancel_order(Order O);
 
     void complete_order(Order O);
+
+    void screenInfo(Order O);
 }

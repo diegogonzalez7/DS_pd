@@ -8,12 +8,14 @@ public class Order {
     HashMap<Integer,Integer> Cart = new HashMap<>();
     boolean h_after_payment = false;
     boolean done_order = false;
-    private final int order_number;
+    boolean started = false;
+    int order_number;
     String Log;
 
     Order() {
         Random rmd_method = new Random();
         this.order_number = rmd_method.nextInt(1000);
+        Log = "Order " + order_number + ": Shopping Phase";
     }
 
     public Phase getOrderPhase() {
@@ -55,4 +57,6 @@ public class Order {
     public void printLog() {
         System.out.println(Log);
     }
+
+    public void screenInfo(){this.OrderPhase.screenInfo(this);this.started=true;}
 }

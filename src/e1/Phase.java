@@ -1,17 +1,17 @@
 package e1;
 
 interface Phase {
-    void add_products(Order O, Product product, int quantity);
+    void addProducts(Order o, Product product, int quantity);
 
-    void modify_quantity(Order O, Product product, int quantity);
+    void modifyQuantity(Order o, Product product, int quantity);
 
-    void delete_product(Order O, int product_id);
+    void deleteProduct(Order o, int productId);
 
-    void next_state(Order O);
+    void nextState(Order o);
 
-    void cancel_order(Order O);
+    void cancelOrder(Order o);
 
-    void complete_order(Order O);
+    void completeOrder(Order o);
 
-    void screenInfo(Order O);
+    String screenInfo(Order o);
 }

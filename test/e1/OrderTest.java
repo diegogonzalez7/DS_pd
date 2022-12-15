@@ -2,6 +2,9 @@ package e1;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderTest {
@@ -15,7 +18,7 @@ class OrderTest {
     void testGetOrderPhase() {
         Order o1 = new Order();
         assertEquals(o1.getOrderPhase().getClass(), ShoppingCart.class);
-        o1.next_state();
+        o1.nextState();
         assertEquals(o1.getOrderPhase().getClass(), Checkout.class);
     }
 
@@ -29,59 +32,59 @@ class OrderTest {
     @Test
     void testAdd_products() {
         //Añade un producto con una cantidad invalida
-        assertThrows(IllegalArgumentException.class, () -> o.add_products(cebolla, 80));
-        o.add_products(cebolla, 3);
-        assertTrue(o.Cart.size() == 1 && o.Cart.get(cebolla.getProduct_id()) == 3);
-        o.add_products(cebolla, 7);
-        o.add_products(cebolla, 8);
-        assertTrue(o.Cart.size() == 1 && o.Cart.get(cebolla.getProduct_id()) == 3);
-        o.add_products(tenedor, 2);
-        assertTrue(o.Cart.size() == 2 && o.Cart.get(tenedor.getProduct_id()) == 2);
+        assertThrows(IllegalArgumentException.class, () -> o.addProducts(cebolla, 80));
+        o.addProducts(cebolla, 3);
+        assertTrue(o.Cart.size() == 1 && o.Cart.get(cebolla.getProductId()) == 3);
+        o.addProducts(cebolla, 7);
+        o.addProducts(cebolla, 8);
+        assertTrue(o.Cart.size() == 1 && o.Cart.get(cebolla.getProductId()) == 3);
+        o.addProducts(tenedor, 2);
+        assertTrue(o.Cart.size() == 2 && o.Cart.get(tenedor.getProductId()) == 2);
         o.setOrderPhase(Checkout.getInstance());
-        assertThrows(UnsupportedOperationException.class, () -> o.add_products(cebolla, 0));
+        assertThrows(UnsupportedOperationException.class, () -> o.addProducts(cebolla, 0));
         o.setOrderPhase(Payment.getInstance());
-        assertThrows(UnsupportedOperationException.class, () -> o.add_products(cebolla, 0));
+        assertThrows(UnsupportedOperationException.class, () -> o.addProducts(cebolla, 0));
         o.setOrderPhase(Cancelled.getInstance());
-        assertThrows(UnsupportedOperationException.class, () -> o.add_products(cebolla, 0));
+        assertThrows(UnsupportedOperationException.class, () -> o.addProducts(cebolla, 0));
         o.setOrderPhase(Completed.getInstance());
-        assertThrows(UnsupportedOperationException.class, () -> o.add_products(cebolla, 0));
+        assertThrows(UnsupportedOperationException.class, () -> o.addProducts(cebolla, 0));
     }
 
     @Test
     void testModify_quantity() {
-        o.add_products(cebolla, 7);
-        o.add_products(tenedor, 2);
-        o.modify_quantity(cebolla, 5);
-        assertEquals(o.Cart.get(cebolla.getProduct_id()), 5);
-        assertThrows(IllegalArgumentException.class, () -> o.modify_quantity(cebolla, 47));
-        o.modify_quantity(tenedor, 0);
+        o.addProducts(cebolla, 7);
+        o.addProducts(tenedor, 2);
+        o.modifyQuantity(cebolla, 5);
+        assertEquals(o.Cart.get(cebolla.getProductId()), 5);
+        assertThrows(IllegalArgumentException.class, () -> o.modifyQuantity(cebolla, 47));
+        o.modifyQuantity(tenedor, 0);
         assertEquals(1, o.Cart.size());
 
         o.setOrderPhase(Checkout.getInstance());
-        o.modify_quantity(cebolla, 7);
-        assertEquals(o.Cart.get(cebolla.getProduct_id()), 7);
-        assertThrows(IllegalArgumentException.class, () -> o.modify_quantity(cebolla, 47));
-        o.modify_quantity(tenedor, 0);
+        o.modifyQuantity(cebolla, 7);
+        assertEquals(o.Cart.get(cebolla.getProductId()), 7);
+        assertThrows(IllegalArgumentException.class, () -> o.modifyQuantity(cebolla, 47));
+        o.modifyQuantity(tenedor, 0);
         assertEquals(1, o.Cart.size());
 
         o.setOrderPhase(Payment.getInstance());
-        assertThrows(UnsupportedOperationException.class, () -> o.modify_quantity(cebolla, 0));
+        assertThrows(UnsupportedOperationException.class, () -> o.modifyQuantity(cebolla, 0));
         o.setOrderPhase(Cancelled.getInstance());
-        assertThrows(UnsupportedOperationException.class, () -> o.modify_quantity(cebolla, 0));
+        assertThrows(UnsupportedOperationException.class, () -> o.modifyQuantity(cebolla, 0));
         o.setOrderPhase(Completed.getInstance());
-        assertThrows(UnsupportedOperationException.class, () -> o.modify_quantity(cebolla, 0));
+        assertThrows(UnsupportedOperationException.class, () -> o.modifyQuantity(cebolla, 0));
     }
 
     @Test
     void testDelete_product() {
-        o.add_products(manzana, 4);
-        o.add_products(cebolla, 2);
-        o.delete_product(cebolla.getProduct_id());
+        o.addProducts(manzana, 4);
+        o.addProducts(cebolla, 2);
+        o.deleteProduct(cebolla.getProductId());
         assertEquals(1, o.Cart.size());
         o.setOrderPhase(Checkout.getInstance());
-        assertThrows(UnsupportedOperationException.class, () -> o.delete_product(111));
+        assertThrows(UnsupportedOperationException.class, () -> o.deleteProduct(111));
         o.setOrderPhase(Payment.getInstance());
-        assertThrows(UnsupportedOperationException.class, () -> o.delete_product(111));
+        assertThrows(UnsupportedOperationException.class, () -> o.deleteProduct(111));
         o.setOrderPhase(Cancelled.getInstance());
         assertThrows(UnsupportedOperationException.class, () -> o.deleteProduct(cebolla.getProductId()));
         o.setOrderPhase(Completed.getInstance());
@@ -90,52 +93,52 @@ class OrderTest {
 
     @Test
     void testNext_state() {
-        o.next_state();
+        o.nextState();
         assertEquals(o.getOrderPhase().getClass(), Checkout.class);
-        o.next_state();
+        o.nextState();
         assertEquals(o.getOrderPhase().getClass(), Payment.class);
-        assertThrows(UnsupportedOperationException.class, o::next_state);
+        assertThrows(UnsupportedOperationException.class, o::nextState);
         this.o.setOrderPhase(Cancelled.getInstance());
-        assertThrows(UnsupportedOperationException.class, o::next_state);
+        assertThrows(UnsupportedOperationException.class, o::nextState);
         this.o.setOrderPhase(Completed.getInstance());
-        assertThrows(UnsupportedOperationException.class, o::next_state);
+        assertThrows(UnsupportedOperationException.class, o::nextState);
     }
 
     @Test
     void testCancel_order() {
-        assertThrows(UnsupportedOperationException.class, () -> o.cancel_order());
+        assertThrows(UnsupportedOperationException.class, () -> o.cancelOrder());
         o.setOrderPhase(Checkout.getInstance());
-        o.cancel_order();
+        o.cancelOrder();
         assertEquals(o.getOrderPhase().getClass(), ShoppingCart.class);
         o.setOrderPhase(Payment.getInstance());
-        o.cancel_order();
+        o.cancelOrder();
         assertEquals(o.getOrderPhase().getClass(), Cancelled.class);
-        o.h_after_payment=true;
-        assertThrows(IllegalStateException.class,() -> o.cancel_order());
-        o.h_after_payment=false;
-        o.cancel_order();
+        o.hAfterPayment =true;
+        assertThrows(IllegalStateException.class,() -> o.cancelOrder());
+        o.hAfterPayment =false;
+        o.cancelOrder();
         assertEquals(o.getOrderPhase().getClass(), ShoppingCart.class);
         o.setOrderPhase(Payment.getInstance());
-        o.complete_order();
-        assertThrows(UnsupportedOperationException.class, () -> o.cancel_order());
+        o.completeOrder();
+        assertThrows(UnsupportedOperationException.class, () -> o.cancelOrder());
     }
 
     @Test
     void testComplete_order() {
-        assertThrows(UnsupportedOperationException.class, () -> o.complete_order());
+        assertThrows(UnsupportedOperationException.class, () -> o.completeOrder());
         o.setOrderPhase(Checkout.getInstance());
-        assertThrows(UnsupportedOperationException.class, () -> o.complete_order());
+        assertThrows(UnsupportedOperationException.class, () -> o.completeOrder());
         o.setOrderPhase(Payment.getInstance());
-        o.complete_order();
+        o.completeOrder();
         assertEquals(o.getOrderPhase().getClass(), Completed.class);
-        o.h_after_payment=false;
-        assertThrows(IllegalStateException.class,() -> o.complete_order());
-        o.h_after_payment=true;
-        o.complete_order();
-        assertTrue(o.done_order);
+        o.hAfterPayment =false;
+        assertThrows(IllegalStateException.class,() -> o.completeOrder());
+        o.hAfterPayment =true;
+        o.completeOrder();
+        assertTrue(o.doneOrder);
         o.setOrderPhase(Payment.getInstance());
-        o.cancel_order();
-        assertThrows(UnsupportedOperationException.class, () -> o.complete_order());
+        o.cancelOrder();
+        assertThrows(UnsupportedOperationException.class, () -> o.completeOrder());
     }
 
     @Test
@@ -164,12 +167,12 @@ class OrderTest {
 
     @Test
     void testScreenInfo() {
-        o.add_products(cebolla, 7);
-        o.add_products(manzana, 3);
-        o.add_products(pollo, 8);
-        o.add_products(tenedor, 8);
-        o.screenInfo();
-        o.screenInfo();
+        o.addProducts(cebolla, 7);
+        o.addProducts(manzana, 3);
+        o.addProducts(pollo, 8);
+        o.addProducts(tenedor, 8);
+        assertEquals(o.screenInfo(),"\nOrder Number : " + o.getOrderNumber() + "\nPhase : Shopping -- Welcome to online shop");
+        assertEquals(o.screenInfo(),"\nOrder Number : " + o.getOrderNumber() + "\nPhase : Shopping -- " + o.Cart.size() + " products");
         o.setOrderPhase(Checkout.getInstance());
         assertEquals(o.screenInfo(),"\nOrder Number : " + o.getOrderNumber() + "\nPhase : Check Out -- " + o.Cart.size() + " products");
         o.setOrderPhase(Payment.getInstance());
@@ -177,7 +180,7 @@ class OrderTest {
         assertEquals(o.screenInfo(),"\nOrder Number : " + o.getOrderNumber() + "\nPhase : Paid Order : " + o.Cart.size() +
                 " products -- date " + LocalDate.now() + " " + time.getHour() + ":" + time.getMinute() + ":" + time.getSecond());
         o.setOrderPhase(Cancelled.getInstance());
-        o.screenInfo();
+        assertEquals(o.screenInfo(),"\nOrder Number : " + o.getOrderNumber() + "\nPhase : Cancelled Order");
         o.setOrderPhase(Completed.getInstance());
         assertEquals(o.screenInfo(),"\nOrder Number : " + o.getOrderNumber() + "\nPhase : Completed Order : " + o.Cart.size() + " products");
     }

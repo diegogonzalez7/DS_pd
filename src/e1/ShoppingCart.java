@@ -11,7 +11,7 @@ public class ShoppingCart implements Phase {
     }
 
     @Override
-    public void add_products(Order O, Product product, int quantity) {
+    public void addProducts(Order o, Product product, int quantity) {
         if (quantity <= product.getStock()) {
             o.Cart.putIfAbsent(product.getProductId(), quantity);
             o.log = o.log.concat("\n- Add : Item : " + product.getProductId() + "- Quantity : " + quantity + " -> Shopping Cart -- Products : " + o.Cart.size());
@@ -20,7 +20,7 @@ public class ShoppingCart implements Phase {
     }
 
     @Override
-    public void modify_quantity(Order O, Product product, int quantity) {
+    public void modifyQuantity(Order o, Product product, int quantity) {
         if (quantity <= product.getStock()) {
             if (quantity == 0) o.Cart.remove(product.getProductId());
             else
@@ -31,24 +31,24 @@ public class ShoppingCart implements Phase {
     }
 
     @Override
-    public void delete_product(Order O, int product_id) {
-        O.Cart.remove(product_id);
-        O.Log = O.Log.concat("\n- Remove : Item : " + product_id + " -> Shopping Cart -- Products : " + O.Cart.size());
+    public void deleteProduct(Order o, int productId) {
+        o.Cart.remove(productId);
+        o.log = o.log.concat("\n- Remove : Item : " + productId + " -> Shopping Cart -- Products : " + o.Cart.size());
     }
 
     @Override
-    public void next_state(Order O) {
-        O.setOrderPhase(Checkout.getInstance());
-        O.Log = O.Log.concat("\nOrder " + O.getOrder_number() + " : Check Out Phase");
+    public void nextState(Order o) {
+        o.setOrderPhase(Checkout.getInstance());
+        o.log = o.log.concat("\nOrder " + o.getOrderNumber() + " : Check Out Phase");
     }
 
     @Override
-    public void cancel_order(Order O) {
+    public void cancelOrder(Order o) {
         throw new UnsupportedOperationException("Cannot cancel an uncompleted order");
     }
 
     @Override
-    public void complete_order(Order O) {
+    public void completeOrder(Order o) {
         throw new UnsupportedOperationException("Cannot complete the order without the payment");
     }
 

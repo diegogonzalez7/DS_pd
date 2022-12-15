@@ -2,11 +2,11 @@ package e1;
 
 public class Product {
     private final int stock;
-    private final int product_id;
+    private final int productId;
 
-    Product(int stock, int product_id) {
+    Product(int stock, int productId) {
         this.stock = stock;
-        this.product_id = product_id;
+        this.productId = productId;
     }
 
     public int getStock() {

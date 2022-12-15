@@ -11,12 +11,12 @@ public class Checkout implements Phase {
     }
 
     @Override
-    public void add_products(Order O, Product product, int quantity) {
+    public void addProducts(Order o, Product product, int quantity) {
         throw new UnsupportedOperationException("Cannot add more new products while on the check out");
     }
 
     @Override
-    public void modify_quantity(Order O, Product product, int quantity) {
+    public void modifyQuantity(Order o, Product product, int quantity) {
         if (quantity <= product.getStock()) {
             if (quantity == 0) o.Cart.remove(product.getProductId());
             else
@@ -27,30 +27,31 @@ public class Checkout implements Phase {
     }
 
     @Override
-    public void delete_product(Order O, int product_id) {
+    public void deleteProduct(Order o, int productId) {
         throw new UnsupportedOperationException("Wrong operation for the check out, use the modify quantity operation instead");
     }
 
     @Override
-    public void next_state(Order O) {
-        O.setOrderPhase(Payment.getInstance());
-        O.Log = O.Log.concat("\nOrder " + O.getOrder_number() + " : Payment Phase");
+    public void nextState(Order o) {
+        o.setOrderPhase(Payment.getInstance());
+        o.log = o.log.concat("\nOrder " + o.getOrderNumber() + " : Payment Phase");
     }
 
     @Override
-    public void cancel_order(Order O) {
+    public void cancelOrder(Order o) {
         //Vuelta a la fase de elección de productos para el carrito.
-        O.setOrderPhase(ShoppingCart.getInstance());
-        O.Log = O.Log.concat("\nOrder " + O.getOrder_number() + " : Shopping Phase");
+        o.setOrderPhase(ShoppingCart.getInstance());
+        o.log = o.log.concat("\nOrder " + o.getOrderNumber() + " : Shopping Phase");
     }
 
     @Override
-    public void complete_order(Order O) {
+    public void completeOrder(Order o) {
         throw new UnsupportedOperationException("Cannot complete the order without the payment");
     }
 
     @Override
-    public void screenInfo(Order O) {
-        System.out.println("\nOrder Number : " + O.getOrder_number() + "\nPhase : Check Out -- " + O.Cart.size() + " products");
+    public String screenInfo(Order o) {
+        System.out.println("\nOrder Number : " + o.getOrderNumber() + "\nPhase : Check Out -- " + o.Cart.size() + " products");
+        return "\nOrder Number : " + o.getOrderNumber() + "\nPhase : Check Out -- " + o.Cart.size() + " products";
     }
 }

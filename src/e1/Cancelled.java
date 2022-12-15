@@ -11,45 +11,46 @@ public class Cancelled implements Phase {
     }
 
     @Override
-    public void add_products(Order O, Product product, int quantity) {
+    public void addProducts(Order o, Product product, int quantity) {
         throw new UnsupportedOperationException("You cannot modify the order because is already done");
     }
 
     @Override
-    public void modify_quantity(Order O, Product product, int quantity) {
+    public void modifyQuantity(Order o, Product product, int quantity) {
         throw new UnsupportedOperationException("You cannot modify the order because is already done");
     }
 
     @Override
-    public void delete_product(Order O, int product_id) {
+    public void deleteProduct(Order o, int productId) {
         throw new UnsupportedOperationException("You cannot modify the order because is already done");
     }
 
     @Override
-    public void next_state(Order O) {
+    public void nextState(Order o) {
         throw new UnsupportedOperationException("There are not more phases after");
     }
 
     @Override
-    public void cancel_order(Order O) {
+    public void cancelOrder(Order o) {
         //cancela orden si 24h esta a true, vacia la lista,los dos bool a false y estado actual shopping cart
-        if (!O.h_after_payment) {
-            O.Cart.clear();
-            O.done_order = false;
-            O.started = false;
-            O.setOrderPhase(ShoppingCart.getInstance());
-            O.Log = O.Log.concat("\n- Order " + O.getOrder_number() + " : Cancelled Order --");
-            O.Log = O.Log.concat("\nOrder " + O.getOrder_number() + ": Shopping Phase");
+        if (!o.hAfterPayment) {
+            o.Cart.clear();
+            o.doneOrder = false;
+            o.started = false;
+            o.setOrderPhase(ShoppingCart.getInstance());
+            o.log = o.log.concat("\n- Order " + o.getOrderNumber() + " : Cancelled Order --");
+            o.log = o.log.concat("\nOrder " + o.getOrderNumber() + ": Shopping Phase");
         } else throw new IllegalStateException("The cancel time has ended");
     }
 
     @Override
-    public void complete_order(Order O) {
+    public void completeOrder(Order o) {
         throw new UnsupportedOperationException("This operation does not belong to this phase");
     }
 
     @Override
-    public void screenInfo(Order O) {
-        System.out.println("\nOrder Number : " + O.getOrder_number() + "\nPhase : Cancelled Order");
+    public String screenInfo(Order o) {
+        System.out.println("\nOrder Number : " + o.getOrderNumber() + "\nPhase : Cancelled Order");
+        return "\nOrder Number : " + o.getOrderNumber() + "\nPhase : Cancelled Order";
     }
 }

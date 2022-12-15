@@ -6,16 +6,16 @@ import java.util.HashMap;
 public class Order {
     Phase OrderPhase = ShoppingCart.getInstance();
     HashMap<Integer,Integer> Cart = new HashMap<>();
-    boolean h_after_payment = false;
-    boolean done_order = false;
+    boolean hAfterPayment = false;
+    boolean doneOrder = false;
     boolean started = false;
-    int order_number;
-    String Log;
+    int orderNumber;
+    String log;
 
     Order() {
-        Random rmd_method = new Random();
-        this.order_number = rmd_method.nextInt(1000);
-        Log = "Order " + order_number + ": Shopping Phase";
+        Random rmdMethod = new Random();
+        this.orderNumber = rmdMethod.nextInt(1000);
+        this.log = "Order " + orderNumber + ": Shopping Phase";
     }
 
     public Phase getOrderPhase() {
@@ -26,37 +26,38 @@ public class Order {
         OrderPhase = orderPhase;
     }
 
-    public int getOrder_number() {
-        return order_number;
+    public int getOrderNumber() {
+        return orderNumber;
     }
 
-    void add_products(Product product, int quantity) {
-        this.OrderPhase.add_products(this, product, quantity);
+    void addProducts(Product product, int quantity) {
+        this.OrderPhase.addProducts(this, product, quantity);
     }
 
-    void modify_quantity(Product product, int quantity) {
-        this.OrderPhase.modify_quantity(this, product, quantity);
+    void modifyQuantity(Product product, int quantity) {
+        this.OrderPhase.modifyQuantity(this, product, quantity);
     }
 
-    void delete_product(int product_id) {
-        this.OrderPhase.delete_product(this, product_id);
+    void deleteProduct(int product_id) {
+        this.OrderPhase.deleteProduct(this, product_id);
     }
 
-    void next_state() {
-        this.OrderPhase.next_state(this);
+    void nextState() {
+        this.OrderPhase.nextState(this);
     }
 
-    void cancel_order() {
-        this.OrderPhase.cancel_order(this);
+    void cancelOrder() {
+        this.OrderPhase.cancelOrder(this);
     }
 
-    void complete_order() {
-        this.OrderPhase.complete_order(this);
+    void completeOrder() {
+        this.OrderPhase.completeOrder(this);
     }
 
-    public void printLog() {
-        System.out.println(Log);
+    public String printLog() {
+        System.out.println(log);
+        return log;
     }
 
-    public void screenInfo(){this.OrderPhase.screenInfo(this);this.started=true;}
+    public String screenInfo(){return this.OrderPhase.screenInfo(this);}
 }

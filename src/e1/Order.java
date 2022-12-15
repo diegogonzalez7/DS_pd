@@ -4,8 +4,8 @@ import java.util.Random;
 import java.util.HashMap;
 
 public class Order {
-    Phase OrderPhase = ShoppingCart.getInstance();
-    HashMap<Integer,Integer> Cart = new HashMap<>();
+    Phase orderPhase = ShoppingCart.getInstance();
+    HashMap<Integer,Integer> cart = new HashMap<>();
     boolean hAfterPayment = false;
     boolean doneOrder = false;
     boolean started = false;
@@ -19,11 +19,11 @@ public class Order {
     }
 
     public Phase getOrderPhase() {
-        return OrderPhase;
+        return orderPhase;
     }
 
     public void setOrderPhase(Phase orderPhase) {
-        OrderPhase = orderPhase;
+        this.orderPhase = orderPhase;
     }
 
     public int getOrderNumber() {
@@ -31,27 +31,27 @@ public class Order {
     }
 
     void addProducts(Product product, int quantity) {
-        this.OrderPhase.addProducts(this, product, quantity);
+        this.orderPhase.addProducts(this, product, quantity);
     }
 
     void modifyQuantity(Product product, int quantity) {
-        this.OrderPhase.modifyQuantity(this, product, quantity);
+        this.orderPhase.modifyQuantity(this, product, quantity);
     }
 
     void deleteProduct(int product_id) {
-        this.OrderPhase.deleteProduct(this, product_id);
+        this.orderPhase.deleteProduct(this, product_id);
     }
 
     void nextState() {
-        this.OrderPhase.nextState(this);
+        this.orderPhase.nextState(this);
     }
 
     void cancelOrder() {
-        this.OrderPhase.cancelOrder(this);
+        this.orderPhase.cancelOrder(this);
     }
 
     void completeOrder() {
-        this.OrderPhase.completeOrder(this);
+        this.orderPhase.completeOrder(this);
     }
 
     public String printLog() {
@@ -59,5 +59,5 @@ public class Order {
         return log;
     }
 
-    public String screenInfo(){return this.OrderPhase.screenInfo(this);}
+    public String screenInfo(){return this.orderPhase.screenInfo(this);}
 }

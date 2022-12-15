@@ -34,12 +34,12 @@ class OrderTest {
         //Añade un producto con una cantidad invalida
         assertThrows(IllegalArgumentException.class, () -> o.addProducts(cebolla, 80));
         o.addProducts(cebolla, 3);
-        assertTrue(o.Cart.size() == 1 && o.Cart.get(cebolla.getProductId()) == 3);
+        assertTrue(o.cart.size() == 1 && o.cart.get(cebolla.getProductId()) == 3);
         o.addProducts(cebolla, 7);
         o.addProducts(cebolla, 8);
-        assertTrue(o.Cart.size() == 1 && o.Cart.get(cebolla.getProductId()) == 3);
+        assertTrue(o.cart.size() == 1 && o.cart.get(cebolla.getProductId()) == 3);
         o.addProducts(tenedor, 2);
-        assertTrue(o.Cart.size() == 2 && o.Cart.get(tenedor.getProductId()) == 2);
+        assertTrue(o.cart.size() == 2 && o.cart.get(tenedor.getProductId()) == 2);
         o.setOrderPhase(Checkout.getInstance());
         assertThrows(UnsupportedOperationException.class, () -> o.addProducts(cebolla, 0));
         o.setOrderPhase(Payment.getInstance());
@@ -55,17 +55,17 @@ class OrderTest {
         o.addProducts(cebolla, 7);
         o.addProducts(tenedor, 2);
         o.modifyQuantity(cebolla, 5);
-        assertEquals(o.Cart.get(cebolla.getProductId()), 5);
+        assertEquals(o.cart.get(cebolla.getProductId()), 5);
         assertThrows(IllegalArgumentException.class, () -> o.modifyQuantity(cebolla, 47));
         o.modifyQuantity(tenedor, 0);
-        assertEquals(1, o.Cart.size());
+        assertEquals(1, o.cart.size());
 
         o.setOrderPhase(Checkout.getInstance());
         o.modifyQuantity(cebolla, 7);
-        assertEquals(o.Cart.get(cebolla.getProductId()), 7);
+        assertEquals(o.cart.get(cebolla.getProductId()), 7);
         assertThrows(IllegalArgumentException.class, () -> o.modifyQuantity(cebolla, 47));
         o.modifyQuantity(tenedor, 0);
-        assertEquals(1, o.Cart.size());
+        assertEquals(1, o.cart.size());
 
         o.setOrderPhase(Payment.getInstance());
         assertThrows(UnsupportedOperationException.class, () -> o.modifyQuantity(cebolla, 0));
@@ -80,7 +80,7 @@ class OrderTest {
         o.addProducts(manzana, 4);
         o.addProducts(cebolla, 2);
         o.deleteProduct(cebolla.getProductId());
-        assertEquals(1, o.Cart.size());
+        assertEquals(1, o.cart.size());
         o.setOrderPhase(Checkout.getInstance());
         assertThrows(UnsupportedOperationException.class, () -> o.deleteProduct(111));
         o.setOrderPhase(Payment.getInstance());
@@ -172,16 +172,16 @@ class OrderTest {
         o.addProducts(pollo, 8);
         o.addProducts(tenedor, 8);
         assertEquals(o.screenInfo(),"\nOrder Number : " + o.getOrderNumber() + "\nPhase : Shopping -- Welcome to online shop");
-        assertEquals(o.screenInfo(),"\nOrder Number : " + o.getOrderNumber() + "\nPhase : Shopping -- " + o.Cart.size() + " products");
+        assertEquals(o.screenInfo(),"\nOrder Number : " + o.getOrderNumber() + "\nPhase : Shopping -- " + o.cart.size() + " products");
         o.setOrderPhase(Checkout.getInstance());
-        assertEquals(o.screenInfo(),"\nOrder Number : " + o.getOrderNumber() + "\nPhase : Check Out -- " + o.Cart.size() + " products");
+        assertEquals(o.screenInfo(),"\nOrder Number : " + o.getOrderNumber() + "\nPhase : Check Out -- " + o.cart.size() + " products");
         o.setOrderPhase(Payment.getInstance());
         LocalDateTime time = LocalDateTime.now();
-        assertEquals(o.screenInfo(),"\nOrder Number : " + o.getOrderNumber() + "\nPhase : Paid Order : " + o.Cart.size() +
+        assertEquals(o.screenInfo(),"\nOrder Number : " + o.getOrderNumber() + "\nPhase : Paid Order : " + o.cart.size() +
                 " products -- date " + LocalDate.now() + " " + time.getHour() + ":" + time.getMinute() + ":" + time.getSecond());
         o.setOrderPhase(Cancelled.getInstance());
         assertEquals(o.screenInfo(),"\nOrder Number : " + o.getOrderNumber() + "\nPhase : Cancelled Order");
         o.setOrderPhase(Completed.getInstance());
-        assertEquals(o.screenInfo(),"\nOrder Number : " + o.getOrderNumber() + "\nPhase : Completed Order : " + o.Cart.size() + " products");
+        assertEquals(o.screenInfo(),"\nOrder Number : " + o.getOrderNumber() + "\nPhase : Completed Order : " + o.cart.size() + " products");
     }
 }

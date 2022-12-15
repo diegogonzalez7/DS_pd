@@ -18,10 +18,10 @@ public class Checkout implements Phase {
     @Override
     public void modifyQuantity(Order o, Product product, int quantity) {
         if (quantity <= product.getStock()) {
-            if (quantity == 0) o.Cart.remove(product.getProductId());
+            if (quantity == 0) o.cart.remove(product.getProductId());
             else
-                o.Cart.replace(product.getProductId(), quantity);
-            o.log = o.log.concat("\n- Modify : Item : " + product.getProductId() + "- Quantity : " + quantity + " -> CheckOut Order -- Products : " + o.Cart.size());
+                o.cart.replace(product.getProductId(), quantity);
+            o.log = o.log.concat("\n- Modify : Item : " + product.getProductId() + "- Quantity : " + quantity + " -> CheckOut Order -- Products : " + o.cart.size());
         } else
             throw new IllegalArgumentException("Invalid value for quantity, must be minor/equal than the stock of the product");
     }
@@ -51,7 +51,7 @@ public class Checkout implements Phase {
 
     @Override
     public String screenInfo(Order o) {
-        System.out.println("\nOrder Number : " + o.getOrderNumber() + "\nPhase : Check Out -- " + o.Cart.size() + " products");
-        return "\nOrder Number : " + o.getOrderNumber() + "\nPhase : Check Out -- " + o.Cart.size() + " products";
+        System.out.println("\nOrder Number : " + o.getOrderNumber() + "\nPhase : Check Out -- " + o.cart.size() + " products");
+        return "\nOrder Number : " + o.getOrderNumber() + "\nPhase : Check Out -- " + o.cart.size() + " products";
     }
 }

@@ -49,7 +49,7 @@ public class Completed implements Phase {
 
     @Override
     public String screenInfo(Order o) {
-        System.out.println("\nOrder Number : " + o.getOrderNumber() + "\nPhase : Completed Order : " + o.Cart.size() + " products");
-        return "\nOrder Number : " + o.getOrderNumber() + "\nPhase : Completed Order : " + o.Cart.size() + " products";
+        System.out.println("\nOrder Number : " + o.getOrderNumber() + "\nPhase : Completed Order : " + o.cart.size() + " products");
+        return "\nOrder Number : " + o.getOrderNumber() + "\nPhase : Completed Order : " + o.cart.size() + " products";
     }
 }

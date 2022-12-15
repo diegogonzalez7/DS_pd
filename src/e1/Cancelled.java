@@ -34,7 +34,7 @@ public class Cancelled implements Phase {
     public void cancelOrder(Order o) {
         //cancela orden si 24h esta a true, vacia la lista,los dos bool a false y estado actual shopping cart
         if (!o.hAfterPayment) {
-            o.Cart.clear();
+            o.cart.clear();
             o.doneOrder = false;
             o.started = false;
             o.setOrderPhase(ShoppingCart.getInstance());

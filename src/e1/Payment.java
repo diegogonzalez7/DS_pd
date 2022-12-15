@@ -48,7 +48,7 @@ public class Payment implements Phase {
     }
 
     @Override
-    public void screenInfo(Order O) {
+    public String screenInfo(Order o) {
         LocalTime time = LocalTime.now();
         System.out.println("\nOrder Number : " + O.getOrder_number() + "\nPhase : Paid Order : " + O.Cart.size() +
                 " products -- date " + LocalDate.now() + " " + time.getHour() + ":" + time.getMinute() + ":" + time.getSecond());

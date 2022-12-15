@@ -13,7 +13,7 @@ public class Product {
         return stock;
     }
 
-    public int getProduct_id() {
-        return product_id;
+    public int getProductId() {
+        return productId;
     }
 }

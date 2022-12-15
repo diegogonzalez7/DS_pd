@@ -83,9 +83,9 @@ class OrderTest {
         o.setOrderPhase(Payment.getInstance());
         assertThrows(UnsupportedOperationException.class, () -> o.delete_product(111));
         o.setOrderPhase(Cancelled.getInstance());
-        assertThrows(UnsupportedOperationException.class, () -> o.delete_product(cebolla.getProduct_id()));
+        assertThrows(UnsupportedOperationException.class, () -> o.deleteProduct(cebolla.getProductId()));
         o.setOrderPhase(Completed.getInstance());
-        assertThrows(UnsupportedOperationException.class, () -> o.delete_product(cebolla.getProduct_id()));
+        assertThrows(UnsupportedOperationException.class, () -> o.deleteProduct(cebolla.getProductId()));
     }
 
     @Test
@@ -140,16 +140,26 @@ class OrderTest {
 
     @Test
     void testPrintLog() {
-        o.add_products(cebolla, 10);
-        o.add_products(manzana, 2);
-        o.add_products(pollo, 3);
-        o.add_products(tenedor, 4);
-        o.delete_product(tenedor.getProduct_id());
-        o.add_products(tenedor, 5);
-        o.next_state();
-        o.modify_quantity(cebolla, 1);
-        o.next_state();
-        o.printLog();
+        o.addProducts(cebolla, 10);
+        o.addProducts(manzana, 2);
+        o.addProducts(pollo, 3);
+        o.addProducts(tenedor, 4);
+        o.deleteProduct(tenedor.getProductId());
+        o.addProducts(tenedor, 5);
+        o.nextState();
+        o.modifyQuantity(cebolla, 1);
+        o.nextState();
+        assertEquals(o.printLog(),"Order " + o.getOrderNumber() + ": Shopping Phase" + "\n"+
+                "- Add : Item : 111- Quantity : 10 -> Shopping Cart -- Products : 1\n" +
+                "- Add : Item : 222- Quantity : 2 -> Shopping Cart -- Products : 2\n" +
+                "- Add : Item : 333- Quantity : 3 -> Shopping Cart -- Products : 3\n" +
+                "- Add : Item : 444- Quantity : 4 -> Shopping Cart -- Products : 4\n" +
+                "- Remove : Item : 444 -> Shopping Cart -- Products : 3\n" +
+                "- Add : Item : 444- Quantity : 5 -> Shopping Cart -- Products : 4\n" +
+                "Order "+o.getOrderNumber()+" : Check Out Phase\n" +
+                "- Modify : Item : 111- Quantity : 1 -> CheckOut Order -- Products : 4\n" +
+                "Order "+ o.getOrderNumber()+" : Payment Phase");
+
     }
 
     @Test
@@ -161,12 +171,14 @@ class OrderTest {
         o.screenInfo();
         o.screenInfo();
         o.setOrderPhase(Checkout.getInstance());
-        o.screenInfo();
+        assertEquals(o.screenInfo(),"\nOrder Number : " + o.getOrderNumber() + "\nPhase : Check Out -- " + o.Cart.size() + " products");
         o.setOrderPhase(Payment.getInstance());
-        o.screenInfo();
+        LocalDateTime time = LocalDateTime.now();
+        assertEquals(o.screenInfo(),"\nOrder Number : " + o.getOrderNumber() + "\nPhase : Paid Order : " + o.Cart.size() +
+                " products -- date " + LocalDate.now() + " " + time.getHour() + ":" + time.getMinute() + ":" + time.getSecond());
         o.setOrderPhase(Cancelled.getInstance());
         o.screenInfo();
         o.setOrderPhase(Completed.getInstance());
-        o.screenInfo();
+        assertEquals(o.screenInfo(),"\nOrder Number : " + o.getOrderNumber() + "\nPhase : Completed Order : " + o.Cart.size() + " products");
     }
 }

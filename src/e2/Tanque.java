@@ -1,6 +1,16 @@
 package e2;
 
+import java.util.Objects;
+import java.util.PriorityQueue;
+
 public class Tanque extends Subject {
+    PriorityQueue<String> report = new PriorityQueue<>((o1, o2) -> {
+        if (o1.contains("ROJA") && !o2.contains("ROJA")) return 1;
+        else if (o1.contains("ROJA") && o2.contains("ROJA")) return 0;
+        else return -1;
+    });
+    //Cada informe de las colas debe tener: tipo de alerta, nombre y ubicación del tanque
+    //Nombre de la alerta, nombre del parámetro, nivel del parámetro y fecha y hora
     float ph;
     float oxygen;
     float temp;
@@ -26,7 +36,7 @@ public class Tanque extends Subject {
     }
 
     public void incrementPh(int increment) {
-        if (increment >= this.getPh() && increment <=15) {
+        if (increment >= this.getPh() && increment <= 15) {
             ph += increment;
         }
         else throw new IllegalArgumentException("Invalid increment value");
@@ -34,7 +44,7 @@ public class Tanque extends Subject {
     }
 
     public void decrementPh(int decrement) {
-        if (decrement <= this.getPh() && decrement >=0) {
+        if (decrement <= this.getPh() && decrement >= 0) {
             ph -= decrement;
         }
         else throw new IllegalArgumentException("Invalid decrement value");
@@ -44,33 +54,48 @@ public class Tanque extends Subject {
     public void incrementOxygen(int increment) {
         if (increment >= this.getOxygen()) {
             oxygen += increment;
-        }
-        else throw new IllegalArgumentException("Invalid increment value");
-        if (oxygen >= Rangos.MAX_OXYGEN.rangeValue) notifyObservers();
+        } else throw new IllegalArgumentException("Invalid increment value");
+        if (oxygen >= Rangos.WARNHIGH_OX.rangeValue) notifyObservers();
     }
 
     public void decrementOxygen(int decrement) {
-        if (decrement <= this.getOxygen() && decrement >=0) {
+        if (decrement <= this.getOxygen() && decrement >= 0) {
             oxygen -= decrement;
-        }
-        else throw new IllegalArgumentException("Invalid decrement value");
-        if (oxygen <= Rangos.MIN_OXYGEN.rangeValue) notifyObservers();
+        } else throw new IllegalArgumentException("Invalid decrement value");
+        if (oxygen <= Rangos.WARNLOW_OX.rangeValue) notifyObservers();
     }
 
     public void incrementTemp(int increment) {
         if (increment >= this.getTemp()) {
             temp += increment;
-        }
-        else throw new IllegalArgumentException("Invalid increment value");
-        if (temp >= Rangos.MAX_TEMP.rangeValue) notifyObservers();
+        } else throw new IllegalArgumentException("Invalid increment value");
+        if (temp >= Rangos.WARNHIGH_TEMP.rangeValue) notifyObservers();
     }
 
     public void decrementTemp(int decrement) {
         if (decrement <= this.getTemp()) {
             temp -= decrement;
+        } else throw new IllegalArgumentException("Invalid decrement value");
+        if (temp <= Rangos.WARNLOW_TEMP.rangeValue) notifyObservers();
+    }
+
+    public String showReport() {
+        boolean orange = false;
+        String returnedReport = "\nAlertas de mantenimiento del tanque\nAlertas ROJAS:";
+        System.out.println("\nAlertas de mantenimiento del tanque\nAlertas ROJAS:");
+        while (true) {
+            assert report.peek() != null;
+            if (!report.peek().contains("ROJA")) break;
+            System.out.println(report.peek());
+            returnedReport = returnedReport.concat(Objects.requireNonNull(report.poll()));
         }
-        else throw new IllegalArgumentException("Invalid decrement value");
-        if (temp <= Rangos.MIN_TEMP.rangeValue) notifyObservers();
+        returnedReport = returnedReport.concat("\nAlertas NARANJAS:");
+        System.out.println("\nAlertas NARANJAS:");
+        while (report.peek() != null) {
+            System.out.println(report.peek());
+            returnedReport = returnedReport.concat(Objects.requireNonNull(report.poll()));
+        }
+        return returnedReport;
     }
 }
 

@@ -17,14 +17,14 @@ public class Oxigeno implements Observer {
             if (tanque.getOxygen() >= Rangos.MAX_OXYGEN.rangeValue || tanque.getOxygen() <= Rangos.MIN_OXYGEN.rangeValue) {
                 //Añadir alerta roja a la cola y estabilizar el nivel
                 tanque.report.add("\nAlerta ROJA:\n" + tanque.getTankName() + ", " + tanque.getTankUbication() + "\nControl de oxígeno : parametro Oxígeno, nivel " + tanque.getOxygen() + "mg/l "
-                        + actTime.getHour() + ":" + actTime.getMinute() + ":" + actTime.getSecond() + LocalDate.now());
+                        + actTime.getHour() + ":" + actTime.getMinute() + ":" + actTime.getSecond() + " " + LocalDate.now());
             } else {
                 //Añador aleerta naranja a la cola de prioridad y estabilizar el nivel de oxigeno
                 tanque.report.add("\nAlerta NARANJA:\n" + tanque.getTankName() + ", " + tanque.getTankUbication() + "\nControl de oxígeno : parametro Oxígeno, nivel " + tanque.getOxygen() + "mg/l " +
-                        + actTime.getHour() + ":" + actTime.getMinute() + ":" + actTime.getSecond() + LocalDate.now());
+                        actTime.getHour() + ":" + actTime.getMinute() + ":" + actTime.getSecond() + " " + LocalDate.now());
             }
         }
-        //Para estabilizar el nivel generamos un numero random entre los valores normales y lo establecemos como el nuevo nivel de oxigeno
-        tanque.oxygen = rndMethod.nextDouble(Rangos.WARNLOW_OX.rangeValue,Rangos.WARNHIGH_OX.rangeValue);
+        //Para estabilizar el nivel
+        tanque.oxygen = rndMethod.nextDouble(Rangos.WARNLOW_OX.rangeValue, Rangos.WARNHIGH_OX.rangeValue);
     }
 }

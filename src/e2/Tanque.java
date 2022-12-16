@@ -9,8 +9,7 @@ public class Tanque extends Subject {
         else if (o1.contains("ROJA") && o2.contains("ROJA")) return 0;
         else return -1;
     });
-    //Cada informe de las colas debe tener: tipo de alerta, nombre y ubicación del tanque
-    //Nombre de la alerta, nombre del parámetro, nivel del parámetro y fecha y hora
+
     double ph;
     double oxygen;
     double temp;
@@ -18,14 +17,13 @@ public class Tanque extends Subject {
 
     String tankUbication;
 
-
-    public Tanque(float ph, float oxygen, float temp, String tankName, String tankUbication) {
+    public Tanque(double ph, double oxygen, double temp, String tankName, String tankUbication) {
         if (ph >= 0 && ph <= 15 && oxygen >= 0) {
             this.ph = ph;
             this.oxygen = oxygen;
         } else throw new IllegalArgumentException("pH must be in range 0-15 and oxygen must be positive");
         this.temp = temp;
-        this.tankName=tankName;
+        this.tankName = tankName;
         this.tankUbication = tankUbication;
     }
 
@@ -50,84 +48,61 @@ public class Tanque extends Subject {
         return temp;
     }
 
-    public void incrementPh(int increment) {
+    public void incrementPh(double increment) {
         if (increment >= this.getPh() && increment <= 15) {
-            ph += increment;
+            ph = increment;
         } else throw new IllegalArgumentException("Invalid increment value");
         if (ph >= Rangos.WARNHIGH_PH.rangeValue) notifyObservers();
     }
 
-    public void decrementPh(int decrement) {
+    public void decrementPh(double decrement) {
         if (decrement <= this.getPh() && decrement >= 0) {
-            ph -= decrement;
+            ph = decrement;
         } else throw new IllegalArgumentException("Invalid decrement value");
         if (ph <= Rangos.WARNLOW_PH.rangeValue) notifyObservers();
     }
 
-    public void incrementOxygen(int increment) {
+    public void incrementOxygen(double increment) {
         if (increment >= this.getOxygen()) {
-            oxygen += increment;
+            oxygen = increment;
         } else throw new IllegalArgumentException("Invalid increment value");
         if (oxygen >= Rangos.WARNHIGH_OX.rangeValue) notifyObservers();
     }
 
-    public void decrementOxygen(int decrement) {
+    public void decrementOxygen(double decrement) {
         if (decrement <= this.getOxygen() && decrement >= 0) {
-            oxygen -= decrement;
+            oxygen = decrement;
         } else throw new IllegalArgumentException("Invalid decrement value");
         if (oxygen <= Rangos.WARNLOW_OX.rangeValue) notifyObservers();
     }
 
-    public void incrementTemp(int increment) {
+    public void incrementTemp(double increment) {
         if (increment >= this.getTemp()) {
-            temp += increment;
+            temp = increment;
         } else throw new IllegalArgumentException("Invalid increment value");
         if (temp >= Rangos.WARNHIGH_TEMP.rangeValue) notifyObservers();
     }
 
-    public void decrementTemp(int decrement) {
+    public void decrementTemp(double decrement) {
         if (decrement <= this.getTemp()) {
-            temp -= decrement;
+            temp = decrement;
         } else throw new IllegalArgumentException("Invalid decrement value");
         if (temp <= Rangos.WARNLOW_TEMP.rangeValue) notifyObservers();
     }
 
     public String showReport() {
-        boolean orange = false;
-        String returnedReport = "\nAlertas de mantenimiento del tanque\nAlertas ROJAS:";
-        System.out.println("\nAlertas de mantenimiento del tanque\nAlertas ROJAS:");
-        while (true) {
-            assert report.peek() != null;
-            if (!report.peek().contains("ROJA")) break;
-            System.out.println(report.peek());
-            returnedReport = returnedReport.concat(Objects.requireNonNull(report.poll()));
-        }
-        returnedReport = returnedReport.concat("\nAlertas NARANJAS:");
-        System.out.println("\nAlertas NARANJAS:");
+
+        String red = "\nAlertas ROJAS:";
+        String orange = "\nAlertas NARANJAS:";
+        String returnedReport = "\nAlertas de mantenimiento del tanque";
+        System.out.println(returnedReport);
         while (report.peek() != null) {
-            System.out.println(report.peek());
-            returnedReport = returnedReport.concat(Objects.requireNonNull(report.poll()));
+            if (report.peek().contains("ROJA")) red = red.concat(Objects.requireNonNull(report.poll()));
+            else orange = orange.concat(Objects.requireNonNull(report.poll()));
         }
+        System.out.println(red + orange);
+        returnedReport = returnedReport.concat(red + orange);
         return returnedReport;
     }
 }
 
-/*
-Nivel de pH:
-
-Nivel normal entre 7,5 – 8,5
-Nivel naranja 5 – 7,4 y 8,6 – 11
-Nivel rojo 0 - 4,9 y 11,1 – 15
-
-Nivel de oxígeno en agua:
-
-Nivel normal entre 5 y 7 mg/l
-Nivel naranja entre 3 - 4,9 mg/l y 7,1 - 9 mg/l
-Nivel rojo entre 0 - 2,9 mg/l y más de 9 mg/l
-
-Temperatura del agua:
-
-Nivel normal: entre 24 y 27 ºC
-Nivel naranja: entre 27,1 - 29 ºC y entre 22 – 23,9 grados
-Nivel rojo: más de 29 grados o menos de 22 grados
- */

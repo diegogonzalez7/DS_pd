@@ -11,27 +11,42 @@ public class Tanque extends Subject {
     });
     //Cada informe de las colas debe tener: tipo de alerta, nombre y ubicación del tanque
     //Nombre de la alerta, nombre del parámetro, nivel del parámetro y fecha y hora
-    float ph;
-    float oxygen;
-    float temp;
+    double ph;
+    double oxygen;
+    double temp;
+    String tankName;
 
-    public Tanque(float ph, float oxygen, float temp) {
+    String tankUbication;
+
+
+    public Tanque(float ph, float oxygen, float temp, String tankName, String tankUbication) {
         if (ph >= 0 && ph <= 15 && oxygen >= 0) {
             this.ph = ph;
             this.oxygen = oxygen;
         } else throw new IllegalArgumentException("pH must be in range 0-15 and oxygen must be positive");
         this.temp = temp;
+        this.tankName=tankName;
+        this.tankUbication = tankUbication;
     }
 
-    public float getPh() {
+
+    public String getTankName() {
+        return tankName;
+    }
+
+    public String getTankUbication() {
+        return tankUbication;
+    }
+
+    public double getPh() {
         return ph;
     }
 
-    public float getOxygen() {
+    public double getOxygen() {
         return oxygen;
     }
 
-    public float getTemp() {
+    public double getTemp() {
         return temp;
     }
 

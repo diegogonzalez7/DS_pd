@@ -19,7 +19,7 @@ public enum Rangos {
     WARNLOW_TEMP(23.9),
     MIN_TEMP (22);
 
-    final double rangeValue;
+    final  double rangeValue;
     Rangos(double rangeValue) {
         this.rangeValue=rangeValue;
     }

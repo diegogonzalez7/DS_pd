@@ -15,7 +15,10 @@ class TanqueTest {
     Oxigeno oxigeno = new Oxigeno();
     Ph ph = new Ph();
 
-
+    @Test
+    void ConstructorExc(){
+        assertThrows(IllegalArgumentException.class,()-> new Tanque(17,5.1,24.1,"Piscina de las focas", "Exterior"));
+    }
     @Test
     void incrementPh() {
         /*
@@ -188,33 +191,32 @@ class TanqueTest {
         assertEquals(tanque.report.size(), 6);
         LocalTime actTime = LocalTime.now();
         assertEquals(tanque.showReport(), "\nAlertas de mantenimiento del tanque\n" +
-
                 "Alertas ROJAS:\n" +
                 "Alerta ROJA:\n" +
                 "Piscina de las focas, Exterior\n" +
-                "Control de oxígeno : parametro Oxígeno, nivel 2.0mg/l "
-                + actTime.getHour() + ":" + actTime.getMinute() + ":" + actTime.getSecond() + " " + LocalDate.now() + "\n" +
+                "Control de oxígeno : parametro Oxígeno, nivel 2.0mg/l "+
+                actTime.getHour() + ":" + actTime.getMinute() + ":" + actTime.getSecond() + " " + LocalDate.now() + "\n" +
                 "Alerta ROJA:\n" +
                 "Piscina de las focas, Exterior\n" +
                 "Control de pH : parametro pH, nivel 0.0 " +
-                +actTime.getHour() + ":" + actTime.getMinute() + ":" + actTime.getSecond() + " " + LocalDate.now() + "\n" +
+                actTime.getHour() + ":" + actTime.getMinute() + ":" + actTime.getSecond() + " " + LocalDate.now() + "\n" +
                 "Alerta ROJA:\n" +
                 "Piscina de las focas, Exterior\n" +
                 "Control de temperatura : parametro temperatura, nivel 21.0ºC " +
-                +actTime.getHour() + ":" + actTime.getMinute() + ":" + actTime.getSecond() + " " + LocalDate.now() + "\n" +
+                actTime.getHour() + ":" + actTime.getMinute() + ":" + actTime.getSecond() + " " + LocalDate.now() + "\n" +
                 "Alertas NARANJAS:\n" +
                 "Alerta NARANJA:\n" +
                 "Piscina de las focas, Exterior\n" +
                 "Control de temperatura : parametro temperatura, nivel 28.0ºC " +
-                +actTime.getHour() + ":" + actTime.getMinute() + ":" + actTime.getSecond() + " " + LocalDate.now() + "\n" +
+                actTime.getHour() + ":" + actTime.getMinute() + ":" + actTime.getSecond() + " " + LocalDate.now() + "\n" +
                 "Alerta NARANJA:\n" +
                 "Piscina de las focas, Exterior\n" +
                 "Control de oxígeno : parametro Oxígeno, nivel 8.0mg/l " +
-                +actTime.getHour() + ":" + actTime.getMinute() + ":" + actTime.getSecond() + " " + LocalDate.now() + "\n" +
+                actTime.getHour() + ":" + actTime.getMinute() + ":" + actTime.getSecond() + " " + LocalDate.now() + "\n" +
                 "Alerta NARANJA:\n" +
                 "Piscina de las focas, Exterior\n" +
                 "Control de pH : parametro pH, nivel 9.0 " +
-                +actTime.getHour() + ":" + actTime.getMinute() + ":" + actTime.getSecond() + " " + LocalDate.now());
+                actTime.getHour() + ":" + actTime.getMinute() + ":" + actTime.getSecond() + " " + LocalDate.now());
         assertEquals(tanque.report.size(), 0);
         tanque.detach(ph);
         tanque.detach(oxigeno);

@@ -38,17 +38,15 @@ public class Tanque extends Subject {
     public void incrementPh(int increment) {
         if (increment >= this.getPh() && increment <= 15) {
             ph += increment;
-        }
-        else throw new IllegalArgumentException("Invalid increment value");
-        if (ph >= Rangos.MAX_PH.rangeValue) notifyObservers();
+        } else throw new IllegalArgumentException("Invalid increment value");
+        if (ph >= Rangos.WARNHIGH_PH.rangeValue) notifyObservers();
     }
 
     public void decrementPh(int decrement) {
         if (decrement <= this.getPh() && decrement >= 0) {
             ph -= decrement;
-        }
-        else throw new IllegalArgumentException("Invalid decrement value");
-        if (ph <= Rangos.MIN_PH.rangeValue) notifyObservers();
+        } else throw new IllegalArgumentException("Invalid decrement value");
+        if (ph <= Rangos.WARNLOW_PH.rangeValue) notifyObservers();
     }
 
     public void incrementOxygen(int increment) {
